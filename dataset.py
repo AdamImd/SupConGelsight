@@ -29,15 +29,11 @@ class mixed_dataset(torch.utils.data.Dataset):
             image = image.resize((224, 224))
             image = image.convert("RGB")
             self.data[i]['image'] = image
-            self.data[i]['type'] = self.data[i]['type']
             # self.data[i]['type'] = encoding[self.data[i]['type']]
         self.len = len(self.data)
     
     def __getitem__(self, index):
         image = self.data[index]['image']
-
-        #image = self.data[index]
-        # image = torch.load(self.data_path + '/' + image['Deapth_image_blur'])
         if(self.transform):
             image = self.transform(image)
         return image, self.data[index]['type']
@@ -84,31 +80,31 @@ def main():
 
     # -----------------------------
 
-    num_synthetic = (min_len - test_size) * 2
-    synth = {}
-    print("_"*50)
-    print("Loading synthetic data...")
+    # num_synthetic = (min_len - test_size) * 1
+    # synth = {}
+    # print("_"*50)
+    # print("Loading synthetic data...")
 
 
-    for file in glob.glob('./data/data_mod/*.json'):
-        with open(file, 'r') as f:
-            synth[file.split('/')[-1]] = json.load(f)
+    # for file in glob.glob('./data/data_mod/*.json'):
+    #     with open(file, 'r') as f:
+    #         synth[file.split('/')[-1]] = json.load(f)
 
-    min_len  = math.inf
-    for key in synth.keys():
-        print("Synth: {}, Count: {}".format(key, len(synth[key])))
-        if(len(synth[key]) < min_len):
-            min_len = len(synth[key])
+    # min_len  = math.inf
+    # for key in synth.keys():
+    #     print("Synth: {}, Count: {}".format(key, len(synth[key])))
+    #     if(len(synth[key]) < min_len):
+    #         min_len = len(synth[key])
 
-    for key in synth.keys():
-        class_num = class_to_idx[key.split('.')[0]]
-        shuffle = np.random.permutation(len(synth[key]))
-        for i in range(num_synthetic):
-            train.append({
-                'Depth_image_blur': os.path.join('data_mod/', synth[key][shuffle[i]]['Deapth_image_blur']),
-                'type': class_num, })
+    # for key in synth.keys():
+    #     class_num = class_to_idx[key.split('.')[0]]
+    #     shuffle = np.random.permutation(len(synth[key]))
+    #     for i in range(num_synthetic):
+    #         train.append({
+    #             'Depth_image_blur': os.path.join('data_mod/', synth[key][shuffle[i]]['Deapth_image_blur']),
+    #             'type': class_num, })
 
-    print("Train: {}, Test: {}".format(len(train), len(test)))
+    # print("Train: {}, Test: {}".format(len(train), len(test)))
 
     # -----------------------------
     

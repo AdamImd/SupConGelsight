@@ -17,7 +17,6 @@ class Net(nn.Module):
             self.load(path)
 
     def forward(self, x):
-
         x = self.base_model(x)
         x = self.dropout(x)
         x = self.fc(x)
@@ -27,6 +26,6 @@ class Net(nn.Module):
         self.load_state_dict(torch.load(path))
 
     def infrence(self, x):
-        torch.eval()
+        self.eval()
         x = self.forward(x)
         return x
